@@ -1,0 +1,17 @@
+{
+  "name": "lanazon",
+  "version": "1.0.0",
+  "description": "Engineering code challenge, backend :: Lana",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Colin Harrington",
+    "email": "colin.harrington@gmail.com",
+    "url": "https://github.com/ColinHarrington/"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
