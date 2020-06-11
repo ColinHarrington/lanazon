@@ -1,7 +1,7 @@
 # Lanazon
-A code challenge Submitted by Colin Harrington. Also a bad play-on-words relating to a bookstore.   
+A code challenge by Colin Harrington. Also a bad play-on-words relating to a bookstore.   
 
-These tools were used:
+Tools utilized:
 * Node 14
 * Typescript
 * Express 
