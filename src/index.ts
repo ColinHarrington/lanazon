@@ -5,6 +5,8 @@ import {checkoutHandler, checkoutValidatorMiddleware} from "./api/checkout";
 import {initDb} from "./lanazon/database";
 import {allProducts} from "./api/products";
 import morgan from "morgan"
+import * as swaggerUi from "swagger-ui-express"
+const swaggerDocument = require('../swagger.json');
 
 const log: Logger = new Logger({name: "expressLogger"});
 
@@ -25,3 +27,5 @@ initDb().then((db) => {
 app.listen(PORT, () => {
     log.info(`Server is running in http://localhost:${PORT}`);
 })
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
