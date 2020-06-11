@@ -1,6 +1,6 @@
 import {ALEXA_SPEAKER, GOOGLE_HOME, MACBOOK_PRO, RASPBERRY_PI, LineItem, Order, Promotion} from "./definitions";
 
-export const HeyGoogleApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion) => {
+export const HeyGoogleApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion): void => {
     const {quantity, product: {price}} = lineItem;
     if (quantity >= 3) {
         const freeDevices = Math.floor(quantity / 3)
@@ -8,7 +8,7 @@ export const HeyGoogleApplyPromo = (order: Order, lineItem: LineItem, promo: Pro
     }
 }
 
-export const AlexaApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion) => {
+export const AlexaApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion): void => {
     const {quantity, amount} = lineItem;
     if (quantity >= 3) {
         lineItem.discount = {amount: amount * 0.10, description: promo.description}
@@ -16,7 +16,7 @@ export const AlexaApplyPromo = (order: Order, lineItem: LineItem, promo: Promoti
 }
 
 //Expand the cart here if it doesn't exist? Seems that it should be a param passed in to take that action of adding items to a cart.
-export const SiriApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion) => {
+export const SiriApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion): void => {
     const mbpQuantity = lineItem.quantity
     const piLineItem = order.lineItems.find(li => li.product.sku === RASPBERRY_PI.sku)//TODO fix with Enum or something?
     if (piLineItem) {
@@ -44,10 +44,10 @@ export const alexaPromotion = {
 }
 const promotions: Promotion[] = [mbpPromotion, googleHomePromotion, alexaPromotion];
 
-export type PromotionMap = Map<String, Promotion>;
-export const activePromotions: PromotionMap = new Map<String, Promotion>(promotions.map(promo => [promo.sku, promo]));
+export type PromotionMap = Map<string, Promotion>;
+export const activePromotions: PromotionMap = new Map<string, Promotion>(promotions.map(promo => [promo.sku, promo]));
 
-export const applyActivePromotions = (order: Order) => {
+export const applyActivePromotions = (order: Order): void => {
     const promoApplicator = (promos: PromotionMap) => (lineItem: LineItem) => {
         const promo = promos.get(lineItem.product.sku);
         if (promo) {

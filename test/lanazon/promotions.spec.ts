@@ -1,4 +1,4 @@
-import {ALEXA_SPEAKER, GOOGLE_HOME, LineItem, MACBOOK_PRO, Order, RASPBERRY_PI} from "../../src/lanazon/definitions";
+import {ALEXA_SPEAKER, GOOGLE_HOME, LineItem, MACBOOK_PRO, RASPBERRY_PI} from "../../src/lanazon/definitions";
 import {
     AlexaApplyPromo,
     alexaPromotion, applyActivePromotions,

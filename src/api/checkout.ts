@@ -16,7 +16,7 @@ const log: Logger = new Logger({name: "checkoutLogger"});
  * @param res Express Response
  * @param next NextFunction moving execution down the chain
  */
-export const checkoutValidatorMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+export const checkoutValidatorMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const checkout = checkoutFromRequest(req)
 
     return validate(checkout).then((errors: ValidationError[]) => {
@@ -40,7 +40,7 @@ export const checkoutValidatorMiddleware = async (req: Request, res: Response, n
  * @param req Express Request
  * @returns a parsed Checkout objects
  */
-export const checkoutFromRequest = (req: Request) => {
+export const checkoutFromRequest = (req: Request): Checkout => {
     const cart: Cart = req.body.cart || {}
     const items = Object.entries(cart).map(([sku, qty]) => new CartItem(sku, qty))
     return new Checkout(items)
@@ -51,7 +51,7 @@ export const checkoutFromRequest = (req: Request) => {
  *
  * @param db the sqlite database
  */
-export const checkoutHandler = (db: Database) => async (req: Request, res: Response) => {
+export const checkoutHandler = (db: Database) => async (req: Request, res: Response):Promise<Response> => {
     const checkout = res.locals.checkout
 
     return processCheckout(db, checkout)
@@ -81,7 +81,7 @@ export const checkoutHandler = (db: Database) => async (req: Request, res: Respo
  *
  * @returns the successful Order
  */
-export const processCheckout = async (db: Database, checkout: Checkout) => {
+export const processCheckout = async (db: Database, checkout: Checkout): Promise<Order> => {
     const {items} = checkout
     const skus = items.map(item => item.sku);
 

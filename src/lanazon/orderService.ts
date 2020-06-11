@@ -1,7 +1,7 @@
 import {Logger} from "tslog";
 import {Database} from "sqlite";
 import {capturePayment} from "./paymentService";
-import {CartItem, DbProduct, Discount, LineItem, notUndefined, Order, ProductNotFoundError} from "./definitions";
+import {CartItem, DbProduct, LineItem, notUndefined, Order, ProductNotFoundError} from "./definitions";
 
 const log: Logger = new Logger({name: "orderLogger"});
 
@@ -19,7 +19,7 @@ export const buildOrder = (cartItems: CartItem[], products: DbProduct[]): Order 
     return {lineItems}
 }
 
-export const updateTotals = (order: Order) => {
+export const updateTotals = (order: Order): void => {
     const {lineItems} = order;
     lineItems.forEach(updateLineItemTotal)
 
@@ -29,18 +29,18 @@ export const updateTotals = (order: Order) => {
     order.total = lineItemTotals.reduce(sum, 0);
 }
 
-export const updateLineItemTotal = (lineItem: LineItem) => {
+export const updateLineItemTotal = (lineItem: LineItem): void => {
     const {amount, discount} = lineItem;
     lineItem.total = amount - (discount?.amount || 0);
 }
 
-export const submitOrder = async (db: Database, order: Order) => {
+export const submitOrder = async (db: Database, order: Order): Promise<Order> => {
     await saveOrder(db, order); //Initialized
     await capturePayment(order); //capture Payment //Charged
     return finalizeOrder(db, order)//Transactional inventory update. //Comfirmed;
 }
 
-export const saveOrder = async (db: Database, order: Order) => {
+export const saveOrder = async (db: Database, order: Order): Promise<Order> => {
     log.info("Order Submitted", order)
     //TODO write order to DB with 'Submitted' status
     return Promise.resolve(order)

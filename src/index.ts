@@ -6,7 +6,7 @@ import {initDb} from "./lanazon/database";
 import {allProducts} from "./api/products";
 import morgan from "morgan"
 import * as swaggerUi from "swagger-ui-express"
-const swaggerDocument = require('../swagger.json');
+import * as swaggerDocument from "../swagger.json"
 
 const log: Logger = new Logger({name: "expressLogger"});
 

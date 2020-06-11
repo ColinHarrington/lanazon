@@ -1,5 +1,6 @@
 import sqlite3 from 'sqlite3'
 import {Database, open} from 'sqlite'
+
 sqlite3.verbose()
 
 export const SQL_CREATE_ITEM_TABLE = `CREATE TABLE PRODUCT(
@@ -8,7 +9,7 @@ export const SQL_CREATE_ITEM_TABLE = `CREATE TABLE PRODUCT(
         price DECIMAL(5,2) NOT NULL,
         qty UNSIGNED BIG INT NOT NULL CHECK (qty >= 0))`
 
-export const initDb = async () => {
+export const initDb = async (): Promise<Database> => {
     const db: Database = await openDb();
 
     await db.exec(SQL_CREATE_ITEM_TABLE);
@@ -24,7 +25,7 @@ export const initDb = async () => {
     return db
 }
 
-export async function openDb() {
+export async function openDb(): Promise<Database> {
     return open({
         filename: ':memory:',
         driver: sqlite3.Database

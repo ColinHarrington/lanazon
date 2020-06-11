@@ -1,7 +1,7 @@
 import {expect} from "chai";
 import {checkoutFromRequest, checkoutValidatorMiddleware} from "../../src/api/checkout";
 import {Request, Response} from "express";
-import {fake, mock} from "sinon";
+import {fake} from "sinon";
 
 describe("checkoutFromRequest", () => {
     it("produces a Checkout object", () => {
@@ -25,7 +25,7 @@ describe("checkoutFromRequest", () => {
 describe("checkoutValidatorMiddleware", () => {
     it("validates the cart and stores produces a Checkout object", () => {
         const request = {body: {cart: {"123456": 7}}} as Request
-        var response = {locals: {}} as Response
+        const response = {locals: {}} as Response
         const nextfn = fake()
 
         return checkoutValidatorMiddleware(request, response, nextfn).then(() => {
@@ -41,7 +41,7 @@ describe("checkoutValidatorMiddleware", () => {
     it("yeilds a 400 with validation errors", () => {
         const request = {body: {cart: {"123456": -1}}} as Request
 
-        var response = {} as Response;
+        const response = {} as Response;
         const json = fake.returns(response);
         const status = fake.returns(response);
         response.status = status;
