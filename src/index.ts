@@ -19,6 +19,7 @@ const app = express();
 
 app.use(morgan('dev'))
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 initDb().then((db) => {
     app.get("/api/products", allProducts(db));
