@@ -4,7 +4,7 @@
   "description": "Engineering code challenge, backend :: Lana",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "test": "nyc mocha -r ts-node/register test/**/*.spec.ts",
     "start": "node --inspect=5858 -r ts-node/register ./src/index.ts",
     "dev": "nodemon",
     "build": "tsc && cp ./swagger.json ./dist/",
@@ -38,6 +38,7 @@
     "eslint-plugin-import": "^2.21.1",
     "mocha": "^7.2.0",
     "nodemon": "^2.0.4",
+    "nyc": "^15.1.0",
     "ts-node": "^8.10.2",
     "tslog": "^2.2.0",
     "typescript": "^3.9.5"
