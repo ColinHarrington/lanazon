@@ -1,17 +1,26 @@
-import {ALEXA_SPEAKER, GOOGLE_HOME, MACBOOK_PRO, RASPBERRY_PI, LineItem, Order, Promotion} from "./definitions";
+import {
+    ALEXA_SPEAKER,
+    GOOGLE_HOME,
+    MACBOOK_PRO,
+    RASPBERRY_PI,
+    LineItem,
+    Order,
+    Promotion,
+    roundMoney
+} from "./definitions";
 
 export const HeyGoogleApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion): void => {
     const {quantity, product: {price}} = lineItem;
     if (quantity >= 3) {
         const freeDevices = Math.floor(quantity / 3)
-        lineItem.discount = {amount: freeDevices * price, description: promo.description}
+        lineItem.discount = {amount: roundMoney(freeDevices * price), description: promo.description}
     }
 }
 
 export const AlexaApplyPromo = (order: Order, lineItem: LineItem, promo: Promotion): void => {
     const {quantity, amount} = lineItem;
     if (quantity >= 3) {
-        lineItem.discount = {amount: amount * 0.10, description: promo.description}
+        lineItem.discount = {amount: roundMoney(amount * 0.10), description: promo.description}
     }
 }
 
@@ -21,7 +30,7 @@ export const SiriApplyPromo = (order: Order, lineItem: LineItem, promo: Promotio
     const piLineItem = order.lineItems.find(li => li.product.sku === RASPBERRY_PI.sku)//TODO fix with Enum or something?
     if (piLineItem) {
         piLineItem.discount = {
-            amount: Math.min(mbpQuantity, piLineItem.quantity) * piLineItem.product.price,
+            amount: roundMoney(Math.min(mbpQuantity, piLineItem.quantity) * piLineItem.product.price),
             description: promo.description
         }
     }

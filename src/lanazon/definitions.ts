@@ -75,9 +75,12 @@ export class ProductNotFoundError extends Error {
         super(`SKU: '${sku}' not found!!`);
         this.sku = sku;
     }
+
     sku: string;
 }
 
 export function notUndefined<T>(x: T | undefined): x is T {
     return x !== undefined;
 }
+
+export const roundMoney = (amount: number) => Math.round(amount * 100) / 100

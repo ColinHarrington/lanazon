@@ -1,7 +1,7 @@
 import {Logger} from "tslog";
 import {Database} from "sqlite";
 import {capturePayment} from "./paymentService";
-import {CartItem, DbProduct, LineItem, notUndefined, Order, ProductNotFoundError} from "./definitions";
+import {CartItem, DbProduct, LineItem, notUndefined, Order, ProductNotFoundError, roundMoney} from "./definitions";
 
 const log: Logger = new Logger({name: "orderLogger"});
 
@@ -26,12 +26,12 @@ export const updateTotals = (order: Order): void => {
     // Calculate total
     const lineItemTotals: number[] = lineItems.map(value => value.total).filter(notUndefined)
     const sum = (a: number| undefined, b: number | undefined) => (a || 0) + (b || 0);
-    order.total = lineItemTotals.reduce(sum, 0);
+    order.total = roundMoney(lineItemTotals.reduce(sum, 0));
 }
 
 export const updateLineItemTotal = (lineItem: LineItem): void => {
     const {amount, discount} = lineItem;
-    lineItem.total = amount - (discount?.amount || 0);
+    lineItem.total = roundMoney(amount - (discount?.amount || 0));
 }
 
 export const submitOrder = async (db: Database, order: Order): Promise<Order> => {
