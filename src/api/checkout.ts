@@ -9,6 +9,13 @@ import {Cart, CartItem, Checkout, DbProduct, Order, ProductNotFoundError} from "
 
 const log: Logger = new Logger({name: "checkoutLogger"});
 
+/**
+ * Express middleware that parses and validates the items in the users' cart.
+ *
+ * @param req Express Request
+ * @param res Express Response
+ * @param next NextFunction moving execution down the chain
+ */
 export const checkoutValidatorMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const checkout = checkoutFromRequest(req)
 
@@ -25,12 +32,25 @@ export const checkoutValidatorMiddleware = async (req: Request, res: Response, n
         res.status(500).json("Unexpected during validation")
     }))
 }
+
+/**
+ * Marshalls a Checkout Object out of an incoming request
+ * if there are no params, it will yeild an empty Checkout/Cart
+ *
+ * @param req Express Request
+ * @returns a parsed Checkout objects
+ */
 export const checkoutFromRequest = (req: Request) => {
     const cart: Cart = req.body.cart || {}
     const items = Object.entries(cart).map(([sku, qty]) => new CartItem(sku, qty))
     return new Checkout(items)
 }
 
+/**
+ * Express Handler that serves as the request/response adapter for our Checkout Logic
+ *
+ * @param db the sqlite database
+ */
 export const checkoutHandler = (db: Database) => async (req: Request, res: Response) => {
     const checkout = res.locals.checkout
 
@@ -49,6 +69,18 @@ export const checkoutHandler = (db: Database) => async (req: Request, res: Respo
         })
 }
 
+/**
+ * Checkout Logic
+ *  -> Builds the order
+ *  -> Applies the promotions
+ *  -> Tally the $$ considering discounts/promos
+ *  -> Submits and captures the order
+ *
+ * @param db
+ * @param checkout a valid Checkout/Cart build by the checkoutValidatorMiddleware
+ *
+ * @returns the successful Order
+ */
 export const processCheckout = async (db: Database, checkout: Checkout) => {
     const {items} = checkout
     const skus = items.map(item => item.sku);
