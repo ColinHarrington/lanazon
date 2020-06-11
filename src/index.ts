@@ -7,6 +7,7 @@ import {allProducts} from "./api/products";
 import morgan from "morgan"
 import * as swaggerUi from "swagger-ui-express"
 import * as swaggerDocument from "../swagger.json"
+import Signals = NodeJS.Signals;
 
 const log: Logger = new Logger({name: "expressLogger"});
 
@@ -24,8 +25,20 @@ initDb().then((db) => {
     app.post("/api/checkout", checkoutValidatorMiddleware, checkoutHandler(db));
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     log.info(`Server is running in http://localhost:${PORT}`);
 })
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+const shutdown = (signal:Signals) => {
+    log.info(`${signal} signal received.`);
+    log.info('Shutting down express');
+    server.close(() => {
+        log.info('Express server shutdown');
+        process.exit(0);
+    });
+}
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
