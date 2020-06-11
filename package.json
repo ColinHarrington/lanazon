@@ -28,12 +28,11 @@
     "@types/morgan": "^1.9.0",
     "@types/node": "^14.0.11",
     "@types/sinon": "^9.0.4",
+    "@types/swagger-ui-express": "^4.1.2",
     "chai": "^4.2.0",
     "eslint": "^7.2.0",
     "eslint-plugin-import": "^2.21.1",
     "mocha": "^7.2.0",
-    "mock-express-request": "^0.2.2",
-    "mock-express-response": "^0.2.2",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2",
     "tslog": "^2.2.0",
@@ -46,11 +45,12 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.22.0",
-    "knex": "^0.21.1",
     "morgan": "^1.10.0",
     "sinon": "^9.0.2",
     "sqlite": "^4.0.10",
-    "sqlite3": "^4.2.0"
+    "sqlite3": "^4.2.0",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4"
   },
   "nodemonConfig": {
     "ignore": [
